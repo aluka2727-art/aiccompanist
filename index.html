@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f6f7" />
+    <title>AIccompanist — MIDI Player</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="header">
+        <h1>AIccompanist</h1>
+        <p>Turn a song into a piano MIDI accompaniment.</p>
+      </header>
+
+      <section class="converter" aria-label="Create a piano MIDI">
+        <div class="converter-heading">
+          <h2>Create a piano MIDI</h2>
+          <p>AIccompanist will try to isolate the piano and leave out vocals.</p>
+        </div>
+        <div class="source-options">
+          <div class="upload-option">
+            <input id="audio-input" type="file" accept="audio/*,video/*,.mp3,.wav,.m4a,.flac,.ogg,.mp4,.mov,.webm" hidden />
+            <button class="import-button" id="audio-import-button">Choose audio or video</button>
+            <span class="source-filename" id="source-filename">MP3, WAV, M4A, MP4, and more</span>
+          </div>
+          <span class="or-divider">or</span>
+          <form id="youtube-form" class="youtube-option">
+            <input id="youtube-url" type="url" placeholder="Paste a YouTube link" aria-label="YouTube video URL" />
+            <button class="import-button secondary" type="submit">Use link</button>
+          </form>
+        </div>
+        <label class="fast-option"><input id="fast-mode" type="checkbox" /> <span>Faster conversion</span><small>Uses a quicker separator; results may be less accurate.</small></label>
+        <label class="fast-option"><input id="preview-mode" type="checkbox" /> <span>30-second preview</span><small>Convert just the beginning of the song.</small></label>
+        <div class="job-status" id="job-status" hidden>
+          <div class="job-heading">
+            <div class="job-message" id="job-message" role="status">Preparing…</div>
+            <button class="import-button secondary" id="cancel-job" type="button" hidden>Cancel</button>
+          </div>
+          <progress class="job-progress" id="job-progress" aria-label="Current conversion step"></progress>
+          <div class="job-detail" id="job-detail"></div>
+          <pre class="job-log" id="job-log"></pre>
+        </div>
+        <div class="conversion-result" id="conversion-result" hidden>
+          <span id="result-message">Piano MIDI is ready.</span>
+          <a class="download-button" id="download-midi" href="#">Download MIDI</a>
+        </div>
+        <p class="fine-print">Processing runs locally. Results may need editing; use songs you have permission to process.</p>
+      </section>
+
+      <section class="player" aria-label="MIDI player">
+        <div class="track-row">
+          <div class="track-info">
+            <div class="track-title" id="track-title">No MIDI file loaded</div>
+            <div class="track-subtitle" id="track-subtitle">Import a MIDI file or create one above</div>
+          </div>
+          <button class="import-button secondary" id="import-button">Import MIDI</button>
+          <input id="file-input" type="file" accept=".mid,.midi,audio/midi,audio/x-midi" hidden />
+        </div>
+
+        <div class="visualizer" id="visualizer" aria-label="Playback visualization">
+          <div class="viz-bars" id="viz-bars" aria-hidden="true"></div>
+          <div class="viz-empty" id="viz-empty">Your MIDI will play here</div>
+          <div class="viz-status"><span id="viz-caption">Ready</span><span id="live-text">Idle</span></div>
+        </div>
+
+        <div class="time-row"><span id="elapsed">0:00</span><span id="duration">0:00</span></div>
+        <input id="seek" class="seek" type="range" min="0" max="1000" value="0" aria-label="Seek through song" />
+
+        <div class="controls-row">
+          <span class="track-count" id="track-count">No track</span>
+          <div class="play-controls">
+            <button class="transport-button" id="restart-button" aria-label="Restart" title="Restart">↺</button>
+            <button class="play-button" id="play-button" aria-label="Play" title="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.8c0-.8.9-1.3 1.6-.9l9.1 5.5a1.8 1.8 0 0 1 0 3.1l-9.1 5.5c-.7.4-1.6-.1-1.6-.9V5.8Z"/></svg></button>
+            <button class="transport-button stop-button" id="stop-button" aria-label="Stop" title="Stop"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="6.5" width="11" height="11" rx="1.5"/></svg></button>
+          </div>
+          <label class="volume-control" aria-label="Volume"><span>Volume</span><input id="volume" type="range" min="0" max="100" value="70" /><span id="volume-value">70%</span></label>
+        </div>
+      </section>
+
+      <p class="privacy-note">MIDI playback and audio conversion run on your computer.</p>
+    </main>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
